@@ -22,7 +22,7 @@ export const createComment = async(req, res) => {
     const { message } = req.body;
     try {
         await Comments.create({
-            userId: req.session.userId,
+            ownerId: req.session.userId,
             hairId: req.params.id,
             message: message,
         });

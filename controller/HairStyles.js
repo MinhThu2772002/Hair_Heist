@@ -9,9 +9,10 @@ export const getHairStyles = async(req, res) => {
     try {
 
         const responses = await HairStyle.findAll({
-            attributes: ["uuid", "name", "image", "url"],
+            attributes: ["uuid", "name", "image", "url", "designerId"],
             include: [{
                 model: Users,
+                attributes: ["name", "email", "profileImgUrl"]
             }]
         });
 
@@ -27,7 +28,11 @@ export const getHairStyleById = async(req, res) => {
             attributes: ["uuid", "name", "image", "url"],
             where: {
                 uuid: req.params.id
-            }
+            },
+            include: [{
+                model: Users,
+                attributes: ["name", "email", "profileImgUrl"]
+            }]
         });
         res.json(response);
     } catch (error) {
@@ -35,33 +40,84 @@ export const getHairStyleById = async(req, res) => {
     }
 }
 
+// export const getHairStyleByKeyword = async(req, res) => {
+//     const { keys = '' } = req.body;
+//     try {
+//         const response = await Keywords.findAll({
+//             attributes: ["hairId", "word"],
+//             where: {
+//                 word: keys
+//             }
+//         });
+//         res.json(response);
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
 export const getHairStyleByKeyword = async(req, res) => {
-    const keys = req.body.keyword;
+    const { keys = '' } = req.body;
     const words = await Keywords.findAll({
         where: {
             word: keys,
-        }
+        },
     });
-
-    if (words != NULL) {
-        try {
-            const response = await HairStyle.findAll({
-                where: {
-                    uuid: words.hairId,
-                },
-            });
-            res.status(200).json(response);
-        } catch (error) {
-            res.status(500).json({ msg: error.message });
+    const hairIds = words.map(word => word.hairId);
+    try {
+        if (hairIds.length === 0) {
+            res.status(400).json({ msg: 'No hair styles found for the given keywords' });
+            return;
         }
-    } else {
+
+        const response = await HairStyle.findAll({
+            attributes: ["uuid", "name", "image", "url", "designerId", "modelId"],
+            where: {
+                uuid: {
+                    [Op.in]: hairIds,
+                },
+            },
+            include: [{
+                model: Users,
+                attributes: ["name", "email", "profileImgUrl"]
+            }]
+        });
+        res.status(200).json(response);
+    } catch (error) {
         res.status(500).json({ msg: error.message });
     }
-
-
 };
 
+// export const getHairStyleByKeyword = async(req, res) => {
+//     const keys = req.body;    
+//     try {
+
+//             const words = await Keywords.findAll({
+//                 include: [{
+//                     model: HairStyle,
+//                     required: true,
+//                     where: {
+//                         word: keys,
+//                     }
+
+//                 }],
+
+//             });
+//             const response = await HairStyle.findAll({
+//                 where: {
+//                     uuid: words.hairId,
+//                 },
+//             });
+//             res.status(200).json(response);
+//         } catch (error) {
+//             res.status(500).json({ msg: error.message });
+//         }
+
+
+
+// };
+
 export const saveHairStyle = (req, res) => {
+
     if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
     const name = req.body.title;
     const file = req.files.file;
@@ -77,11 +133,17 @@ export const saveHairStyle = (req, res) => {
     file.mv(`./public/images/${fileName}`, async(err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
+            const tempde = await Users.findOne({
+                attributes: ["uuid"],
+                where: {
+                    id: req.userId
+                }
+            });
             await HairStyle.create({
                 name: name,
                 image: fileName,
                 url: url,
-                designerId: req.userId
+                designerId: tempde.uuid
             });
             res.status(201).json({ msg: "HairStyle Created Successfuly" });
         } catch (error) {

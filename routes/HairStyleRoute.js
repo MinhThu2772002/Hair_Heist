@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get('/hairstyle', verifyUser, getHairStyles);
 router.get('/hairstyle/:id', verifyUser, getHairStyleById);
-router.get('/hairstylebykey', verifyUser, getHairStyleByKeyword);
+router.post('/hairstylebykey', verifyUser, getHairStyleByKeyword);
 router.post('/hairstyle', verifyUser, designerOnly, saveHairStyle);
 router.patch('/hairstyle/:id', verifyUser, designerOnly, updateHairStyle);
 router.delete('/hairstyle/:id', verifyUser, designerOnly, deleteHairStyle);

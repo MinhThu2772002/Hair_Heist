@@ -27,6 +27,6 @@ const Keywords = db.define(
     }
 );
 
-HairStyle.hasMany(Keywords);
-Keywords.belongsTo(HairStyle, { foreignKey: 'hairId', targetkey: "HairStyle.uuid", constraints: false })
+HairStyle.hasMany(Keywords, { foreignKey: 'hairId', targetkey: "HairStyle.uuid", constraints: false });
+Keywords.belongsTo(HairStyle)
 export default Keywords;

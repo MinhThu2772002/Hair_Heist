@@ -4,7 +4,8 @@ import { response } from "express";
 import fs from "fs";
 import Users from "../models/UsersModel.js";
 import { Op } from "sequelize"
-export const getHairStyles = async(req, res) => {
+import Keywords from "../models/KeyworkModel.js";
+export const getHairStyles = async (req, res) => {
     try {
 
         const responses = await HairStyle.findAll({
@@ -19,7 +20,7 @@ export const getHairStyles = async(req, res) => {
     }
 }
 
-export const getHairStyleById = async(req, res) => {
+export const getHairStyleById = async (req, res) => {
     try {
         const response = await HairStyle.findOne({
             where: {
@@ -31,6 +32,32 @@ export const getHairStyleById = async(req, res) => {
         console.log(error.message);
     }
 }
+
+export const getHairStyleByKeyword = async (req, res) => {
+    const { keyword } = req.body;
+    const word = await Keywords.findAll({
+        where: {
+            word: keyword,
+        }
+    });
+
+    if (Keywords.word != NULL) {
+        try {
+            const response = await HairStyle.findAll({
+                where: {
+                    uuid: Keywords.hairId,
+                },
+            });
+            res.status(200).json(response);
+        } catch (error) {
+            res.status(500).json({ msg: error.message });
+        }
+    } else {
+        res.status(500).json({ msg: error.message });
+    }
+
+
+};
 
 export const saveHairStyle = (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
@@ -45,7 +72,7 @@ export const saveHairStyle = (req, res) => {
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid Images" });
     if (fileSize > 5000000) return res.status(422).json({ msg: "Image must be less than 5 MB" });
 
-    file.mv(`./public/images/${fileName}`, async(err) => {
+    file.mv(`./public/images/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
             await HairStyle.create({
@@ -62,7 +89,7 @@ export const saveHairStyle = (req, res) => {
 
 }
 
-export const updateHairStyle = async(req, res) => {
+export const updateHairStyle = async (req, res) => {
     const HairStylei = await HairStyle.findOne({
         where: {
             id: req.params.id
@@ -105,7 +132,7 @@ export const updateHairStyle = async(req, res) => {
     }
 }
 
-export const deleteHairStyle = async(req, res) => {
+export const deleteHairStyle = async (req, res) => {
     const HairStylei = await HairStyle.findOne({
         where: {
             id: req.params.id

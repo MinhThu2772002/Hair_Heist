@@ -9,8 +9,8 @@ export const createBookmarks = async(req, res) => {
 
     try {
         await Bookmarks.create({
-            hairId: req.session.userId,
-            userId: req.params.id,
+            userId: req.session.userId,
+            hairId: req.params.id,
         });
         res.status(201).json({ msg: "Mark Successfully" });
     } catch (error) {

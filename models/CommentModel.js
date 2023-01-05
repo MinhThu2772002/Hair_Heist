@@ -8,7 +8,7 @@ const Comments = db.define(
     "Comments", {
 
         hairId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true

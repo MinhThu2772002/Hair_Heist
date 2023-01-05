@@ -6,6 +6,7 @@ import fs from "fs";
 
 export const createKeyword = async(req, res) => {
     const { word } = req.body;
+
     try {
         await Keywords.create({
             hairId: req.params.id,

@@ -9,6 +9,7 @@ export const getHairStyles = async(req, res) => {
     try {
 
         const responses = await HairStyle.findAll({
+            attributes: ["uuid", "name", "image", "url"],
             include: [{
                 model: Users,
             }]
@@ -23,8 +24,9 @@ export const getHairStyles = async(req, res) => {
 export const getHairStyleById = async(req, res) => {
     try {
         const response = await HairStyle.findOne({
+            attributes: ["uuid", "name", "image", "url"],
             where: {
-                id: req.params.id
+                uuid: req.params.id
             }
         });
         res.json(response);
@@ -34,18 +36,18 @@ export const getHairStyleById = async(req, res) => {
 }
 
 export const getHairStyleByKeyword = async(req, res) => {
-    const { keyword } = req.body;
-    const word = await Keywords.findAll({
+    const keys = req.body.keyword;
+    const words = await Keywords.findAll({
         where: {
-            word: keyword,
+            word: keys,
         }
     });
 
-    if (word != NULL) {
+    if (words != NULL) {
         try {
             const response = await HairStyle.findAll({
                 where: {
-                    id: word.hairId,
+                    uuid: words.hairId,
                 },
             });
             res.status(200).json(response);

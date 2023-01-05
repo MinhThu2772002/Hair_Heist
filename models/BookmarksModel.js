@@ -8,7 +8,7 @@ const Bookmarks = db.define(
     "bookmarks", {
 
         hairId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true

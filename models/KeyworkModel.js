@@ -7,7 +7,7 @@ const { DataTypes } = Sequelize;
 const Keywords = db.define(
     "Keywords", {
         hairId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true
@@ -28,5 +28,5 @@ const Keywords = db.define(
 );
 
 HairStyle.hasMany(Keywords);
-Keywords.belongsTo(HairStyle, { foreignKey: 'hairId' })
+Keywords.belongsTo(HairStyle, { foreignKey: 'hairId', targetkey: "HairStyle.uuid", constraints: false })
 export default Keywords;

@@ -38,7 +38,7 @@ const HairStyle = db.define(
 
 
         designerId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true
@@ -46,7 +46,7 @@ const HairStyle = db.define(
             }
         },
         modelId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
             validate: {
                 notEmpty: true
@@ -60,5 +60,5 @@ const HairStyle = db.define(
 );
 
 Users.hasMany(HairStyle);
-HairStyle.belongsTo(Users, { foreignKey: 'designerId' });
+HairStyle.belongsTo(Users, { foreignKey: 'designerId', targetKey: "uuid", constraints: false });
 export default HairStyle;

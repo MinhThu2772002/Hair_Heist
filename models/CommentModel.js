@@ -16,7 +16,7 @@ const Comments = db.define(
             }
         },
         userId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true
@@ -39,6 +39,7 @@ const Comments = db.define(
 );
 
 Users.hasMany(Comments);
-Comments.belongsTo(Users, { foreignKey: 'userId' });
-Comments.hasOne(HairStyle, { foreignKey: 'hairId' })
+Comments.belongsTo(Users, { foreignKey: 'userId', targetKey: "uuid", constraints: false });
+Comments.hasOne(HairStyle)
+Comments.belongsTo(HairStyle, { foreignKey: 'hairId', targetkey: "HairStyle.uuid", constraints: false });
 export default Comments;

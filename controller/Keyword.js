@@ -1,10 +1,8 @@
-import Users from "../models/UsersModel.js";
 import HairStyle from "../models/HairStyleModel.js";
-import Bookmarks from "../models/BookmarksModel.js";
+import Keywords from "../models/KeyworkModel.js";
 import argon2 from "argon2";
 import path from "path";
 import fs from "fs";
-import Keywords from "../models/KeyworkModel.js";
 
 export const createKeyword = async (req, res) => {
     const { word } = req.body;
@@ -40,3 +38,19 @@ export const deleteKeyword = async (req, res) => {
         res.status(400).json({ msg: error.message });
     }
 };
+
+//get the hairstyle by keyword
+// export const getKeyword = async(req, res) => {
+//     try {
+
+//         const responses = await Keywords.findAll({
+//             include: [{
+//                 model: HairStyle,
+//             }]
+//         });
+
+//         res.json(responses);
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }

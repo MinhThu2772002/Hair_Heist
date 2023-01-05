@@ -17,3 +17,17 @@ export const getCommentById = async(req, res) => {
         console.log(error.message);
     }
 }
+
+export const createComment = async(req, res) => {
+    const { message } = req.body;
+    try {
+        await Comments.create({
+            userId: req.session.userId,
+            hairId: req.params.id,
+            message: message,
+        });
+        res.status(201).json({ msg: "Comment Successfully" });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+};

@@ -9,7 +9,7 @@ export const createBookmarks = async(req, res) => {
 
     try {
         await Bookmarks.create({
-            userId: req.session.userId,
+            ownerId: req.session.userId,
             hairId: req.params.id,
         });
         res.status(201).json({ msg: "Mark Successfully" });
@@ -21,7 +21,7 @@ export const createBookmarks = async(req, res) => {
 export const deleteBookmarks = async(req, res) => {
     const bookmark = await Bookmarks.findOne({
         where: {
-            userId: req.session.userId,
+            ownerId: req.session.userId,
             hairId: req.params.id,
         }
     });
@@ -29,7 +29,7 @@ export const deleteBookmarks = async(req, res) => {
     try {
         await Bookmarks.destroy({
             where: {
-                userId: req.session.userId,
+                ownerId: req.session.userId,
                 hairId: req.params.id,
             },
         });

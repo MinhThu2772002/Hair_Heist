@@ -1,6 +1,7 @@
 import express from "express";
 import {
     getCommentById,
+    createComment
 } from "../controller/Comment.js"
 import {
     verifyUser
@@ -8,5 +9,6 @@ import {
 const router = express.Router();
 
 router.get('/comments/:id', verifyUser, getCommentById);
+router.post('/comments/:id', verifyUser, createComment);
 
 export default router;

@@ -15,8 +15,8 @@ const Bookmarks = db.define(
 
             }
         },
-        userId: {
-            type: DataTypes.INTEGER,
+        ownerId: {
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 notEmpty: true
@@ -30,6 +30,6 @@ const Bookmarks = db.define(
 );
 
 Users.hasMany(Bookmarks);
-Bookmarks.belongsTo(Users, { foreignKey: 'userId' });
-Bookmarks.hasOne(HairStyle, { foreignKey: 'hairId' })
+Bookmarks.belongsTo(Users, { foreignKey: 'ownerId', targetKey: 'uuid', constraints: false    });
+Bookmarks.hasOne(HairStyle, { foreignKey: 'hairId', targetKey: 'uuid', constraints: false    })
 export default Bookmarks;

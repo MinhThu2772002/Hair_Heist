@@ -5,12 +5,12 @@ import {
 } from "../controller/Bookmarks.js"
 import {
 
-    designerOnly,
+    UserOnly,
     verifyUser
 } from "../middleware/AuthUser.js";
 const router = express.Router();
 
-router.post('/keyword', createBookmarks);
-router.delete('/keyword', verifyUser, designerOnly, deleteBookmarks);
+router.post('/bookmark/:id', verifyUser, createBookmarks);
+router.delete('/bookmark/:id', verifyUser, deleteBookmarks);
 
 export default router;

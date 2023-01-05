@@ -10,7 +10,7 @@ import {
 } from "../middleware/AuthUser.js";
 const router = express.Router();
 
-router.post('/keyword', createKeyword);
-router.delete('/keyword', verifyUser, designerOnly, deleteKeyword);
+router.post('/keyword/:id', verifyUser, designerOnly, createKeyword);
+router.delete('/keyword/:id', verifyUser, designerOnly, deleteKeyword);
 
 export default router;

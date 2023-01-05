@@ -4,11 +4,11 @@ import argon2 from "argon2";
 import path from "path";
 import fs from "fs";
 
-export const createKeyword = async (req, res) => {
+export const createKeyword = async(req, res) => {
     const { word } = req.body;
     try {
         await Keywords.create({
-            hairId: req.params.hairId,
+            hairId: req.params.id,
             word: word,
         });
         res.status(201).json({ msg: "Add keyword Successfully" });
@@ -17,11 +17,11 @@ export const createKeyword = async (req, res) => {
     }
 };
 
-export const deleteKeyword = async (req, res) => {
+export const deleteKeyword = async(req, res) => {
     const { word } = req.body;
     const keyword = await Keywords.findOne({
         where: {
-            hairId: req.params.hairId,
+            hairId: req.params.id,
             word: word,
         }
     });
@@ -29,7 +29,7 @@ export const deleteKeyword = async (req, res) => {
     try {
         await Keywords.destroy({
             where: {
-                hairId: req.params.hairId,
+                hairId: req.params.id,
                 word: word,
             },
         });

@@ -25,3 +25,14 @@ export const designerOnly = async(req, res, next) => {
     if (user.role !== "designer") return res.status(404).json({ msg: "Access denied" });
     next();
 }
+export const UserOnly = async(req, res, next) => {
+
+    const user = await Users.findOne({
+        where: {
+            uuid: req.session.userId
+        }
+    });
+    if (!user) return res.status(404).json({ msg: "User not exist" });
+    if (user.role !== "user") return res.status(404).json({ msg: "Access denied" });
+    next();
+}

@@ -17,9 +17,9 @@ import db from "./config/Database.js";
 dotenv.config();
 
 const app = express();
-(async() => {
+/*(async() => {
     await db.sync();
-})();
+})();*/
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
     db: db

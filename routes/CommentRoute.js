@@ -1,7 +1,8 @@
 import express from "express";
 import {
     getCommentById,
-    createComment
+    createComment,
+    deleteComment
 } from "../controller/Comment.js"
 import {
     verifyUser
@@ -10,5 +11,6 @@ const router = express.Router();
 
 router.get('/comments/:id', verifyUser, getCommentById);
 router.post('/comments/:id', verifyUser, createComment);
+router.delete('/deletecomments/:id', verifyUser, deleteComment);
 
 export default router;

@@ -39,19 +39,3 @@ export const deleteKeyword = async(req, res) => {
         res.status(400).json({ msg: error.message });
     }
 };
-
-//get the hairstyle by keyword
-// export const getKeyword = async(req, res) => {
-//     try {
-
-//         const responses = await Keywords.findAll({
-//             include: [{
-//                 model: HairStyle,
-//             }]
-//         });
-
-//         res.json(responses);
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }

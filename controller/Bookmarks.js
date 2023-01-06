@@ -5,20 +5,29 @@ import argon2 from "argon2";
 import path from "path";
 import fs from "fs";
 
-export const createBookmarks = async(req, res) => {
-
-    try {
-        await Bookmarks.create({
+export const createBookmarks = async (req, res) => {
+    const bookmark = await Bookmarks.findOne({
+        where: {
             ownerId: req.session.userId,
             hairId: req.params.id,
-        });
-        res.status(201).json({ msg: "Mark Successfully" });
-    } catch (error) {
-        res.status(400).json({ msg: error.message });
+        }
+    });
+    if (!bookmark) {
+        try {
+            await Bookmarks.create({
+                ownerId: req.session.userId,
+                hairId: req.params.id,
+            });
+            res.status(201).json({ msg: "Mark Successfully" });
+        } catch (error) {
+            res.status(400).json({ msg: error.message });
+        }
+    } else {
+        return res.status(400).json({ msg: "Bookmark existed" });
     }
 };
 
-export const deleteBookmarks = async(req, res) => {
+export const deleteBookmarks = async (req, res) => {
     const bookmark = await Bookmarks.findOne({
         where: {
             ownerId: req.session.userId,
